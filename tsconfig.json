@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    // 目标 JavaScript 版本
+    "target": "ES2020",
+    // 使用 ESNext 模块系统
+    "module": "ESNext",
+    // 模块解析策略（bundler 适合 Vite）
+    "moduleResolution": "bundler",
+    // 允许导入 JSON 文件
+    "resolveJsonModule": true,
+    // 启用所有严格类型检查选项
+    "strict": true,
+    // 允许导入 .js 文件
+    "allowJs": true,
+    // 跳过库文件的类型检查（提升性能）
+    "skipLibCheck": true,
+    // 允许默认导入没有默认导出的模块
+    "allowSyntheticDefaultImports": true,
+    // 启用装饰器（Vue 可能需要）
+    "experimentalDecorators": true,
+    // 使用 JSX（Vue 的模板会编译成 JSX）
+    "jsx": "preserve",
+    // 不生成编译后的文件（Vite 会处理）
+    "noEmit": true,
+    // 允许从没有默认导出的模块中默认导入
+    "esModuleInterop": true,
+    // 路径别名配置
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    // 包含的库类型定义
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // 类型定义文件的位置
+    "types": ["vite/client", "vitest/globals"]
+  },
+  // 包含的文件
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "test/**/*.ts",
+    "vite.config.ts"
+  ],
+  // 排除的文件
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

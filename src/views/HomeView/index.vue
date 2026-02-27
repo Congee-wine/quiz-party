@@ -1,13 +1,16 @@
-<script setup>
-import DefaultLayout from '@/layouts/DefaultLayout/index.vue';
-import VLeaderboard from '@/components/VLeaderboard/index.vue';
+<script setup lang="ts">
+import { ref } from 'vue'
+import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
+import VLeaderboard from '@/components/VLeaderboard/index.vue'
+import type { LeaderboardEntry } from '@/types'
 
-import { ref } from 'vue';
+const leaderboard = ref<LeaderboardEntry[]>([])
 
-const leaderboard = ref([]);
-leaderboard.value = localStorage.getItem('leaderboard')
-  ? JSON.parse(localStorage.getItem('leaderboard'))
-  : [];
+// 从 localStorage 读取排行榜数据
+const storedLeaderboard = localStorage.getItem('leaderboard')
+if (storedLeaderboard) {
+  leaderboard.value = JSON.parse(storedLeaderboard)
+}
 </script>
 
 <template>

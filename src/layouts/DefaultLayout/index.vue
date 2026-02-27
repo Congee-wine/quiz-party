@@ -1,8 +1,4 @@
-<script>
-export default {
-  name: 'DefaultLayout',
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main class="default-layout">

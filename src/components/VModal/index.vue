@@ -1,22 +1,25 @@
-<script setup>
+<script setup lang="ts">
 import { toRef, watch } from 'vue'
 
-const props = defineProps({
-  show: {
-    type: String,
-    default: 'true',
-  },
-})
+// 定义 props
+interface Props {
+  show: boolean
+}
+
+const props = defineProps<Props>()
+
+// 定义 emits
+const emit = defineEmits<{
+  'on-close': []
+}>()
 
 const show = toRef(props, 'show')
 
-const emit = defineEmits(['on-close'])
 const onClose = () => {
   emit('on-close')
 }
 
-// 点击背景关闭模态框
-const onBackgroundClicked = (e) => {
+const onBackgroundClicked = (e: MouseEvent) => {
   const modalWrapper = document.querySelector('.modal-wrapper')
 
   if (e.target === modalWrapper) {
@@ -24,15 +27,13 @@ const onBackgroundClicked = (e) => {
   }
 }
 
-// 按下 Esc 键关闭模态框
-const onEscapeKeyClicked = (e) => {
+const onEscapeKeyClicked = (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
     onClose()
   }
 }
 
-// 处理事件监听
-const watchHandler = (canShow) => {
+const watchHandler = (canShow: boolean) => {
   if (canShow) {
     document.addEventListener('keyup', onEscapeKeyClicked)
     document.addEventListener('click', onBackgroundClicked)

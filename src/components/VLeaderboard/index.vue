@@ -1,10 +1,13 @@
-<script setup>
-defineProps({
-  leaderboard: {
-    type: Array,
-    required: true,
-  },
-})
+<script setup lang="ts">
+import type { LeaderboardEntry } from '@/types'
+
+// 定义 props
+interface Props {
+  leaderboard: LeaderboardEntry[]
+}
+
+// 使用 defineProps 接收 props
+defineProps<Props>()
 </script>
 
 <template>
