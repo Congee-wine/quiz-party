@@ -1,3 +1,12 @@
+<script setup>
+defineProps({
+  leaderboard: {
+    type: Array,
+    required: true,
+  },
+})
+</script>
+
 <template>
   <section id="leaderboard" class="leaderboard">
     <h2 class="leaderboard__title">排行榜</h2>
@@ -20,22 +29,5 @@
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  name: 'VLeaderboard',
-
-  props: {
-    leaderboard: {
-      type: Array,
-      required: true,
-    },
-  },
-
-  setup(props) {
-    return { leaderboard: props.leaderboard };
-  },
-};
-</script>
 
 <style src="./VLeaderboard.scss" lang="scss" scoped />

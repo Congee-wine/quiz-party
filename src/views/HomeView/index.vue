@@ -1,3 +1,15 @@
+<script setup>
+import DefaultLayout from '@/layouts/DefaultLayout/index.vue';
+import VLeaderboard from '@/components/VLeaderboard/index.vue';
+
+import { ref } from 'vue';
+
+const leaderboard = ref([]);
+leaderboard.value = localStorage.getItem('leaderboard')
+  ? JSON.parse(localStorage.getItem('leaderboard'))
+  : [];
+</script>
+
 <template>
   <DefaultLayout>
     <header class="header">
@@ -9,27 +21,4 @@
   </DefaultLayout>
 </template>
 
-<script>
-import DefaultLayout from '@/layouts/DefaultLayout/index.vue';
-import VLeaderboard from '@/components/VLeaderboard/index.vue';
-
-import { ref } from 'vue';
-
-export default {
-  name: 'HomeView',
-
-  components: {
-    VLeaderboard,
-    DefaultLayout,
-  },
-
-  setup() {
-    const leaderboard = ref([]);
-    leaderboard.value = localStorage.getItem('leaderboard') ? JSON.parse(localStorage.getItem('leaderboard')) : [];
-
-    return { leaderboard };
-  },
-};
-</script>
-
-<style src="./HomeView.scss" lang="scss" sciped />
+<style src="./HomeView.scss" lang="scss" scoped />
