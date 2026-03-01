@@ -5,19 +5,28 @@ import VModal from '@/components/VModal/index.vue'
 import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
 import type { Character, LeaderboardEntry } from '@/types'
 
-// Mock Api
-import characters from '@/assets/mock/characters.json'
+// api
+import { getCharactersService } from '@/api/quiz'
 
 const router = useRouter()
 
 const score = ref(0)
 const isModalOpen = ref(false)
+const characters = ref<Character[]>([])
+
+// 获取角色数据
+const getCharacters = async () => {
+  const res = await getCharactersService()
+  characters.value = res
+}
+getCharacters()
 
 const character = computed(() => {
   // 从高到低查找匹配的角色
   return (
-    (characters as Character[]).find((c) => score.value >= c.minimumScore) ||
-    characters[characters.length - 1]
+    (characters.value as Character[]).find(
+      (c) => score.value >= c.minimumScore,
+    ) || characters.value[characters.value.length - 1]
   )
 })
 
@@ -85,9 +94,9 @@ const onCharacterSubmited = () => {
 
   <DefaultLayout class="result-view">
     <h1 class="result-view__title">结束了！</h1>
-    <span class="result-view__description"
-      >恭喜！您在本次测验中获得了 {{ score }} 分！</span
-    >
+    <span class="result-view__description">
+      恭喜！您在本次测验中获得了 {{ score }} 分！
+    </span>
 
     <div class="result-view__actions">
       <button class="result-view__show-results" @click="openModal">

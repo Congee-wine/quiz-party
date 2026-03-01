@@ -4,11 +4,11 @@ import { useRouter } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
 import type { Quiz, QuizStatus } from '@/types'
 
-// Mock Api
-import quizzesList from '@/assets/mock/quizzes.json'
+// api
+import { getQuizzesService } from '@/api/quiz'
 
 // utils
-import { shuffleArray } from '@/utils/index'
+import shuffleArray from '@/utils/shuffleArray'
 
 const router = useRouter()
 
@@ -16,9 +16,17 @@ const step = ref(0)
 const width = ref(100)
 const timer = ref<number | null>(null)
 const statuses = ref<QuizStatus[]>([])
+const quizzesList = ref<Quiz[]>([])
+
+// 获取 quizzes 数据
+const getQuizzes = async () => {
+  const res = await getQuizzesService()
+  quizzesList.value = res
+}
+getQuizzes()
 
 const quizzes = computed(() => {
-  return shuffleArray([...quizzesList]) as Quiz[]
+  return shuffleArray([...quizzesList.value]) as Quiz[]
 })
 
 const quiz = computed(() => {
@@ -130,7 +138,7 @@ onMounted(startTimer)
     </div>
   </Transition>
 
-  <DefaultLayout class="quiz-view">
+  <DefaultLayout v-if="quiz" class="quiz-view">
     <div class="timeout" :style="`width: ${width}%`"></div>
 
     <h1 class="quiz-view__title">{{ quiz.title }}</h1>
