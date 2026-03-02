@@ -18,10 +18,19 @@ defineProps<Props>()
       <template v-for="(leader, index) in leaderboard" :key="index">
         <div class="leader">
           <div class="leader__image-box">
-            <img :src="leader.image" :alt="leader.name" class="leader__image" />
+            <img
+              :src="leader.image"
+              :alt="leader.characterName"
+              class="leader__image"
+            />
           </div>
 
-          <span class="leader__name">{{ leader.name }}</span>
+          <span
+            style="color: firebrick; font-weight: 700"
+            class="leader__name"
+            >{{ leader.userName }}</span
+          >
+          <span class="leader__name">{{ leader.characterName }}</span>
           <span class="leader__score">{{ leader.score }} 分</span>
         </div>
       </template>

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeMount } from 'vue'
+
 import { useRouter } from 'vue-router'
+
+import type { Character, LeaderboardEntry } from '@/types'
+
 import VModal from '@/components/VModal/index.vue'
 import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
-import type { Character, LeaderboardEntry } from '@/types'
 
 // api
 import { getCharactersService } from '@/api/quiz'
@@ -11,6 +14,7 @@ import { getCharactersService } from '@/api/quiz'
 const router = useRouter()
 
 const score = ref(0)
+const userName = ref('')
 const isModalOpen = ref(false)
 const characters = ref<Character[]>([])
 
@@ -32,8 +36,14 @@ const character = computed(() => {
 
 onBeforeMount(() => {
   const storedScore = localStorage.getItem('score')
+  const storedUserNmae = localStorage.getItem('currentUser')
+
   if (storedScore) {
     score.value = JSON.parse(storedScore)
+  }
+
+  if (storedUserNmae) {
+    userName.value = JSON.parse(storedUserNmae)
   }
 })
 
@@ -59,8 +69,9 @@ const updateLeaderboard = (newEntry: LeaderboardEntry) => {
 
 const onCharacterSubmited = () => {
   updateLeaderboard({
+    userName: userName.value,
     image: character.value.image,
-    name: character.value.name,
+    characterName: character.value.name,
     score: score.value,
   })
 

@@ -25,7 +25,8 @@ export interface Character {
 
 // 排行榜记录接口
 export interface LeaderboardEntry {
-  name: string
+  userName: string
+  characterName: string
   image: string
   score: number
 }
