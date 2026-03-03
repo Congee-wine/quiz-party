@@ -1,25 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
 import { useRouter } from 'vue-router'
-
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import type { LeaderboardEntry } from '@/types'
-
 import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
 import VLeaderboard from '@/components/VLeaderboard/index.vue'
 import VModal from '@/components/VModal/index.vue'
 
 const router = useRouter()
 
-const leaderboard = ref<LeaderboardEntry[]>([])
+const { setValue: saveCurrentUser } = useLocalStorage('currentUser', '')
+const { data: leaderboard } = useLocalStorage<LeaderboardEntry[]>(
+  'leaderboard',
+  [],
+)
+
 const isModalOpen = ref(false)
 const userName = ref('')
-
-// 从 localStorage 读取排行榜数据
-const storedLeaderboard = localStorage.getItem('leaderboard')
-if (storedLeaderboard) {
-  leaderboard.value = JSON.parse(storedLeaderboard)
-}
 
 // 打开模态框
 const openModal = () => {
@@ -36,7 +33,7 @@ const closeModal = () => {
 const startQuiz = () => {
   if (userName.value.trim()) {
     // 保存用户名到 localStorage
-    localStorage.setItem('currentUser', JSON.stringify(userName.value.trim()))
+    saveCurrentUser(userName.value.trim())
     // 跳转到测验页
     router.push('/quiz')
     closeModal()

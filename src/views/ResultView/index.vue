@@ -1,22 +1,27 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from 'vue'
-
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-
 import type { Character, LeaderboardEntry } from '@/types'
-
 import VModal from '@/components/VModal/index.vue'
 import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
+
+// Hook
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 
 // api
 import { getCharactersService } from '@/api/quiz'
 
 const router = useRouter()
 
-const score = ref(0)
-const userName = ref('')
 const isModalOpen = ref(false)
 const characters = ref<Character[]>([])
+
+// 使用 Hook 管理 localStorage
+const { data: score } = useLocalStorage<number>('score', 0)
+const { data: userName } = useLocalStorage<string>('currentUser', '')
+const { data: leaderboard, setValue: setLeaderboard } = useLocalStorage<
+  LeaderboardEntry[]
+>('leaderboard', [])
 
 // 获取角色数据
 const getCharacters = async () => {
@@ -34,19 +39,6 @@ const character = computed(() => {
   )
 })
 
-onBeforeMount(() => {
-  const storedScore = localStorage.getItem('score')
-  const storedUserNmae = localStorage.getItem('currentUser')
-
-  if (storedScore) {
-    score.value = JSON.parse(storedScore)
-  }
-
-  if (storedUserNmae) {
-    userName.value = JSON.parse(storedUserNmae)
-  }
-})
-
 const openModal = () => {
   isModalOpen.value = true
 }
@@ -55,25 +47,17 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-const updateLeaderboard = (newEntry: LeaderboardEntry) => {
-  let leaderboard: LeaderboardEntry[] = []
-
-  const storedLeaderboard = localStorage.getItem('leaderboard')
-  if (storedLeaderboard) {
-    leaderboard = JSON.parse(storedLeaderboard)
-  }
-
-  leaderboard.push(newEntry)
-  localStorage.setItem('leaderboard', JSON.stringify(leaderboard))
-}
-
 const onCharacterSubmited = () => {
-  updateLeaderboard({
+  // 使用 Hook 的方法更新排行榜
+  const newEntry: LeaderboardEntry = {
     userName: userName.value,
     image: character.value.image,
     characterName: character.value.name,
     score: score.value,
-  })
+  }
+
+  // 添加新记录到排行榜
+  setLeaderboard([...leaderboard.value, newEntry])
 
   isModalOpen.value = false
   router.push('/')

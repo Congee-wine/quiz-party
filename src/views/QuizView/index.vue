@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
 import type { Quiz, QuizStatus } from '@/types'
+import DefaultLayout from '@/layouts/DefaultLayout/index.vue'
+
+// Hook
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 
 // api
 import { getQuizzesService } from '@/api/quiz'
@@ -11,6 +14,7 @@ import { getQuizzesService } from '@/api/quiz'
 import shuffleArray from '@/utils/shuffleArray'
 
 const router = useRouter()
+const { setValue: saveScore } = useLocalStorage('score', 0)
 
 const step = ref(0)
 const width = ref(100)
@@ -82,7 +86,7 @@ const changeStep = () => {
 
     // Check if next step is available or not
     if (step.value + 1 > quizzes.value.length - 1) {
-      localStorage.setItem('score', JSON.stringify(calculateScore()))
+      saveScore(calculateScore())
 
       return router.push('/result')
     }
