@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.1",
     "axios": "^1.13.6",
     "vue": "^3.4.5",
     "vue-router": "^4.2.5"
@@ -18,7 +19,10 @@
   "devDependencies": {
     "@types/node": "^25.3.3",
     "@vitejs/plugin-vue": "^5.2.4",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
     "sass": "^1.75.0",
+    "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^5.4.21",
     "vite-plugin-checker": "^0.12.0",

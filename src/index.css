@@ -1,0 +1,38 @@
+/* 导入 Tailwind CSS v4 */
+@import 'tailwindcss';
+
+/* 
+  🎨 使用 @theme 定义自定义主题
+  这是 Tailwind v4 的新语法，替代了 v3 的 tailwind.config.js
+*/
+@theme {
+  /* 自定义颜色 */
+  --color-primary: #e5383b;
+  --color-success: #4f772d;
+  --color-danger: #ba181b;
+
+  /* 自定义灰度色 */
+  --color-custom-gray-200: #d3d3d3;
+  --color-custom-gray-400: #9b9a9a;
+  --color-custom-gray-600: #161a1d;
+  --color-custom-gray-900: #0b090a;
+}
+
+/* 
+  🌐 全局样式
+  Tailwind v4 的 Preflight 已经包含了基础重置
+  这里只需要添加额外的全局样式
+*/
+@layer base {
+  /* 设置默认行高 */
+  * {
+    line-height: 1.4;
+    font-family: sans-serif;
+  }
+
+  /* 链接样式 */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

@@ -4,4 +4,4 @@
   <RouterView />
 </template>
 
-<style src="@/assets/styles/App.scss" lang="scss" />
+<!-- 不再需要 App.scss，Tailwind 样式在 index.css 中 -->
