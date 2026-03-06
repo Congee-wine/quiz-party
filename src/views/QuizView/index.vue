@@ -12,12 +12,14 @@ import { getQuizzesService } from '@/api/quiz'
 
 // utils
 import shuffleArray from '@/utils/shuffleArray'
+import { calculateQuizScore } from '@/utils/calculateQuizScore'
 
 const router = useRouter()
 const { setValue: saveScore } = useLocalStorage('score', 0)
 
 const step = ref(0)
 const width = ref(100)
+const timeLeft = ref(0)
 const timer = ref<number | null>(null)
 const statuses = ref<QuizStatus[]>([])
 const quizzesList = ref<Quiz[]>([])
@@ -67,17 +69,8 @@ const startTimer = () => {
   timer.value = window.setTimeout(startTimer, 100)
 }
 
-const calculateScore = () => {
-  let score = 0
-
-  for (const status of statuses.value) {
-    if (status === 'win') score += 100
-  }
-
-  const timeLeft = width.value / 10
-  const finalScore = Math.floor(score * timeLeft)
-
-  return finalScore
+const calculateTimeLeft = (time: number) => {
+  timeLeft.value += time
 }
 
 const changeStep = () => {
@@ -86,7 +79,10 @@ const changeStep = () => {
 
     // Check if next step is available or not
     if (step.value + 1 > quizzes.value.length - 1) {
-      saveScore(calculateScore())
+      // 使用工具函数计算分数
+      const totalTimeLeft = timeLeft.value / 10
+      const finalScore = calculateQuizScore(statuses.value, totalTimeLeft)
+      saveScore(finalScore)
 
       return router.push('/result')
     }
@@ -110,9 +106,12 @@ const onTimeout = () => {
 }
 
 const checkAnswer = (answerId: number) => {
+  const isAnswerTrue = quiz.value.currectAnswer === answerId
+
   stopTimer()
 
-  quiz.value.currectAnswer === answerId ? onWin() : onLose()
+  isAnswerTrue ? onWin() : onLose()
+  isAnswerTrue ? calculateTimeLeft(width.value) : calculateTimeLeft(0)
 
   changeStep()
 }
@@ -120,6 +119,7 @@ const checkAnswer = (answerId: number) => {
 watch(width, (value) => {
   if (value <= 0) {
     onTimeout()
+    calculateTimeLeft(0)
     changeStep()
   }
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import type { LeaderboardEntry } from '@/types'
@@ -10,9 +10,11 @@ import VModal from '@/components/VModal/index.vue'
 const router = useRouter()
 
 const { setValue: saveCurrentUser } = useLocalStorage('currentUser', '')
-const { data: leaderboard } = useLocalStorage<LeaderboardEntry[]>(
-  'leaderboard',
-  [],
+const { data } = useLocalStorage<LeaderboardEntry[]>('leaderboard', [])
+
+// 根据分数给数组排序
+const leaderboard = computed(() =>
+  [...data.value].sort((a, b) => b.score - a.score),
 )
 
 const isModalOpen = ref(false)
