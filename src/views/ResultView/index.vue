@@ -66,40 +66,76 @@ const onCharacterSubmited = () => {
 
 <template>
   <VModal :show="isModalOpen" @on-close="closeModal">
-    <div class="character">
-      <div class="character__avatar-box">
+    <div class="flex flex-col items-center max-w-96">
+      <div
+        class="relative w-32 h-32 rounded-full overflow-hidden border-[3px] border-primary"
+      >
+        <!-- 
+          头像图片
+          - absolute inset-0: 绝对定位，填满父容器
+          - w-full h-full: 宽高 100%
+          - object-cover: 保持比例裁剪
+        -->
         <img
           :src="character.image"
           :alt="character.name"
-          class="character__avatar"
+          class="absolute inset-0 w-full h-full object-cover"
         />
       </div>
 
-      <span class="character__name">{{ character.name }}</span>
+      <span class="font-bold text-custom-gray-900 text-2xl mt-8">
+        {{ character.name }}
+      </span>
 
-      <p class="character__summary">
+      <p class="text-center text-custom-gray-400 mt-6">
         您成功获得了角色
-        <span class="character__summary-bold">«{{ character.name }}»</span>！
+        <span class="font-bold text-custom-gray-900"
+          >«{{ character.name }}»</span
+        >！
         {{ character.summary }}
       </p>
     </div>
 
-    <button class="action" @click="onCharacterSubmited">接受角色</button>
+    <button
+      class="w-full mt-12 px-6 py-4 rounded-lg font-bold text-sm text-white bg-primary border border-primary cursor-pointer outline-none"
+      @click="onCharacterSubmited"
+    >
+      接受角色
+    </button>
   </VModal>
 
-  <DefaultLayout class="result-view">
-    <h1 class="result-view__title">结束了！</h1>
-    <span class="result-view__description">
+  <!-- min-h-screen: 最小高度 100vh -->
+  <DefaultLayout class="flex flex-col min-h-screen items-center justify-center">
+    <h1 class="font-bold text-custom-gray-900 text-[28px]">结束了！</h1>
+
+    <span class="text-custom-gray-400 mt-4">
       恭喜！您在本次测验中获得了 {{ score }} 分！
     </span>
 
-    <div class="result-view__actions">
-      <button class="result-view__show-results" @click="openModal">
+    <div class="mt-14">
+      <button
+        class="px-6 py-4 rounded-lg font-bold text-sm text-white bg-primary border border-primary cursor-pointer outline-none"
+        @click="openModal"
+      >
         查看结果
       </button>
-      <RouterLink to="/quiz" class="result-view__retry">重试</RouterLink>
+
+      <!-- inline-block: 行内块元素（让 padding 生效）-->
+      <RouterLink
+        to="/quiz"
+        class="inline-block ml-4 px-6 py-4 rounded-lg font-bold text-sm text-primary border border-primary"
+      >
+        重试
+      </RouterLink>
     </div>
   </DefaultLayout>
 </template>
 
-<style src="./ResultView.scss" lang="scss" scoped />
+<style scoped>
+/*
+深度选择器：修改 VModal 内部样式，限制模态框的最大宽度
+*/
+:deep(.rounded-2xl) {
+  max-width: 24rem;
+}
+</style>

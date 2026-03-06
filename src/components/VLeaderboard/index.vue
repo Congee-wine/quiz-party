@@ -11,35 +11,45 @@ defineProps<Props>()
 </script>
 
 <template>
-  <section id="leaderboard" class="leaderboard">
-    <h2 class="leaderboard__title">排行榜</h2>
+  <section id="leaderboard" class="p-6">
+    <h2 class="text-2xl font-bold text-custom-gray-900">排行榜</h2>
 
-    <div v-if="leaderboard.length" class="leaders leaderboard__leaders">
-      <template v-for="(leader, index) in leaderboard" :key="index">
-        <div class="leader">
-          <div class="leader__image-box">
-            <img
-              :src="leader.image"
-              :alt="leader.characterName"
-              class="leader__image"
-            />
-          </div>
-
-          <span
-            style="color: firebrick; font-weight: 700"
-            class="leader__name"
-            >{{ leader.userName }}</span
-          >
-          <span class="leader__name">{{ leader.characterName }}</span>
-          <span class="leader__score">{{ leader.score }} 分</span>
+    <div
+      v-if="leaderboard.length"
+      class="mt-12 grid gap-6 grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]"
+    >
+      <div
+        v-for="(leader, index) in leaderboard"
+        :key="index"
+        class="flex flex-col items-center rounded-2xl px-16 py-8 bg-white border-2 border-primary"
+      >
+        <div
+          class="overflow-hidden w-32 h-32 rounded-full border-[3px] border-primary"
+        >
+          <!-- object-cover: 保持比例裁剪-->
+          <img
+            :src="leader.image"
+            :alt="leader.characterName"
+            class="w-full h-full object-cover"
+          />
         </div>
-      </template>
+
+        <span class="text-xl mt-4 text-danger font-bold">
+          {{ leader.userName }}
+        </span>
+
+        <span class="text-xl mt-4 text-custom-gray-900">
+          {{ leader.characterName }}
+        </span>
+
+        <span class="font-bold text-xl mt-4 text-custom-gray-900">
+          {{ leader.score }} 分
+        </span>
+      </div>
     </div>
 
-    <div v-else class="leaderboard__empty">
+    <div v-else class="mt-4 text-custom-gray-400 text-center">
       <span>暂无评分记录...</span>
     </div>
   </section>
 </template>
-
-<style src="./VLeaderboard.scss" lang="scss" scoped />
